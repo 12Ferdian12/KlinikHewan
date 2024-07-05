@@ -3,8 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Laravel Inertia React</title>
+    <title inertia>{{ config('app.name', 'LaraReact') }}</title>
+    @viteReactRefresh
     @vite('resources/js/app.jsx')
+    @inertiaHead
 </head>
 <body>
     @inertia

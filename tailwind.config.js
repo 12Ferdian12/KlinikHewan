@@ -1,6 +1,6 @@
 // tailwind.config.js
 module.exports = {
-    purge: [
+    content: [
         // Add this to config
         "./resources/**/*.blade.php",
         "./resources/**/*.js",
