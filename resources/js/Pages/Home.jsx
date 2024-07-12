@@ -6,7 +6,7 @@ export default function Home() {
         <div className="container mx-auto">
             <div className="text-center">
                 <Card>
-                    <H2>Login</H2>
+                    <H2>Home Page</H2>
                 </Card>
             </div>
         </div>
