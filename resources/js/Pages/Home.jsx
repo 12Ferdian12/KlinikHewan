@@ -1,14 +1,14 @@
-import React from "react";
-import AppLayout from "@/Layouts/AppLayout";
+import Card from "@/Components/card";
+import { H2 } from "@/Components/typography";
 
-const Home = () => {
+export default function Home() {
     return (
-        <AppLayout>
-            <div className="text-3xl font-bold text-center text-white">
-                Welcome to Inertia.js with Laravel and React! dd
+        <div className="container mx-auto">
+            <div className="text-center">
+                <Card>
+                    <H2>Login</H2>
+                </Card>
             </div>
-        </AppLayout>
+        </div>
     );
-};
-
-export default Home;
+}
