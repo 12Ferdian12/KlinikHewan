@@ -17,11 +17,21 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
+    redirect()->route('login');
+});
+
+Route::get('/login', function () {
     return Inertia('Auth/Login');
 })->name('login');
 
-Route::post('/login', [UserController::class, 'auth'])->name('auth');
 
 Route::get('/home', function () {
     return Inertia('Home');
 })->name('home');
+
+Route::prefix('api')->group(function () {
+    Route::post('login', [UserController::class, 'auth'])->name('auth');
+    Route::group(['middleware' => ['jwt.verify']], function() {
+        Route::post('logout', [UserController::class, 'logout']);
+    });
+});

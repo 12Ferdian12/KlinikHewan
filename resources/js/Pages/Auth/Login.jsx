@@ -3,11 +3,11 @@ import { H2, P, H4 } from "@/Components/typography";
 import TextInput from "@/components/textInput";
 import Button from "@/components/Button";
 import { useState } from "react";
-import { router } from "@inertiajs/react";
+import { Inertia } from "@inertiajs/inertia";
 
 export default function Login() {
     const [values, setValues] = useState({
-        username: "",
+        email: "",
         password: "",
     });
 
@@ -15,19 +15,46 @@ export default function Login() {
         const key = e.target.id;
         const value = e.target.value;
 
-        console.log("key : ", key);
-        console.log("value : ", value);
-
         setValues((values) => ({
             ...values,
             [key]: value,
         }));
     }
 
-    function handleSubmit(e) {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        router.post("/login", values);
-    }
+
+        const csrfTokenElement = document.querySelector(
+            'meta[name="csrf-token"]'
+        );
+        if (!csrfTokenElement) {
+            alert("CSRF token not found");
+            return;
+        }
+
+        const csrfToken = csrfTokenElement.getAttribute("content");
+
+        const response = await fetch("/api/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": csrfToken,
+            },
+            body: JSON.stringify({
+                email: values.email,
+                password: values.password,
+            }),
+        });
+
+        const data = await response.json();
+        if (data.token) {
+            localStorage.setItem("token", data.token);
+            Inertia.visit("/home");
+        } else {
+            alert("Login failed");
+        }
+    };
+
     return (
         <form onSubmit={handleSubmit} className="container mx-auto">
             <Card
@@ -40,14 +67,14 @@ export default function Login() {
                 </div>
 
                 <TextInput
-                    label={"Username"}
+                    label={"Email"}
                     className={"mt-3"}
                     inputSize={"sm"}
                     full={"true"}
                     type={"text"}
                     required={true}
-                    value={values.username}
-                    id={"username"}
+                    value={values.email}
+                    id={"email"}
                     onChange={handleChange}
                 />
                 <TextInput
